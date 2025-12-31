@@ -7,7 +7,7 @@ export interface TimelineData {
   fullContent: string[];
   readTime: string;
   readText: string;
-  readLink: string;
+  readLinks: { text: string; link: string }[];
 }
 
 export interface ProjectsData {
