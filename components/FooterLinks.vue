@@ -10,16 +10,10 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'FooterLinks',
-  props: {
-    links: {
-      type: Array,
-      default: () => []
-    }
-  }
-}
+<script setup lang="ts">
+defineProps<{
+  links: { name: string; link: string }[]
+}>()
 </script>
 
 <style scoped lang="scss">

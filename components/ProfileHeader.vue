@@ -5,7 +5,7 @@
         <b-img
           class="profile-pic"
           alt="Profile Image"
-          src="../assets/img/profile_pic.jpg"
+          src="/img/profile_pic.jpg"
           width="175"
         />
       </div>
@@ -30,10 +30,7 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'ProfileHeader'
-}
+<script setup lang="ts">
 </script>
 
 <style scoped lang="scss">

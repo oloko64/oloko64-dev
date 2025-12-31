@@ -15,7 +15,7 @@
       >
         <b-img
           class="info-icon"
-          :src="iconPath(icon.name)"
+          :src="`/img/icons/${icon.name}.png`"
           :alt="icon.alt"
           :height="icon.height"
         />
@@ -25,52 +25,45 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  setup () {
-        interface Icon {
-            name: string;
-            link: string;
-            alt: string;
-            height: string;
-        }
-        const icons: Icon[] = [
-          {
-            name: 'github',
-            alt: 'github',
-            height: '28px',
-            link: 'https://github.com/oloko64'
-          },
-          {
-            name: 'telegram',
-            alt: 'telegram',
-            height: '28px',
-            link: 'https://t.me/5516997226813'
-          },
-          {
-            name: 'whatsapp',
-            alt: 'whatsapp',
-            height: '28px',
-            link: 'https://wa.me/qr/B5FIPTNB2QW2I1'
-          },
-          {
-            name: 'linkedin',
-            alt: 'linkedin',
-            height: '28px',
-            link: 'https://www.linkedin.com/in/reinaldo-rozato-junior-309ba319a/'
-          },
-          {
-            name: 'email',
-            alt: 'email',
-            height: '28px',
-            link: 'mailto:reinaldorozatoj.11cg1@aleeas.com'
-          }
-        ]
-        // The "require" is needed to tell webpack to pack the icon
-        const iconPath = (name: string) => require(`../assets/img/icons/${name}.png`)
-        return { icons, iconPath }
-  }
+<script setup lang="ts">
+interface Icon {
+    name: string;
+    link: string;
+    alt: string;
+    height: string;
 }
+const icons: Icon[] = [
+  {
+    name: 'github',
+    alt: 'github',
+    height: '28px',
+    link: 'https://github.com/oloko64'
+  },
+  {
+    name: 'telegram',
+    alt: 'telegram',
+    height: '28px',
+    link: 'https://t.me/5516997226813'
+  },
+  {
+    name: 'whatsapp',
+    alt: 'whatsapp',
+    height: '28px',
+    link: 'https://wa.me/qr/B5FIPTNB2QW2I1'
+  },
+  {
+    name: 'linkedin',
+    alt: 'linkedin',
+    height: '28px',
+    link: 'https://www.linkedin.com/in/reinaldo-rozato-junior-309ba319a/'
+  },
+  {
+    name: 'email',
+    alt: 'email',
+    height: '28px',
+    link: 'mailto:reinaldorozatoj.11cg1@aleeas.com'
+  }
+]
 </script>
 
 <style scoped lang="scss">

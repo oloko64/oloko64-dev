@@ -3,7 +3,7 @@
     <Layout>
       <transition name="fade" appear>
         <div v-if="timeline.length">
-          <path-timeline :blocks="timeline" />
+          <PathTimeline :blocks="timeline" />
         </div>
         <div v-else class="loading-block">
           <b-spinner label="Spinning" variant="secondary" />
@@ -14,28 +14,12 @@
   </div>
 </template>
 
-<script lang="ts">
-import { TimelineData } from '../utils'
-import { getters } from '../store/data'
+<script setup lang="ts">
+const { timeline, fetchTimeline } = useData()
 
-export default {
-  data: () => ({
-  }),
-  computed: {
-    timeline () {
-      // @ts-ignore
-      const timeline: TimelineData[] = this.$store.getters['data/getTimeline'] as ReturnType<typeof getters.getTimeline>
-      return timeline
-    }
-  },
-  beforeMount () {
-    // @ts-ignore
-    if (!this.$store.getters['data/getTimeline'].length) {
-      // @ts-ignore
-      this.$store.dispatch('data/fetchTimelineDataStore')
-    }
-  }
-}
+onMounted(() => {
+  fetchTimeline()
+})
 </script>
 
 <style scoped lang="scss">
@@ -54,7 +38,7 @@ export default {
     background-position: center;
   }
   .layer {
-    background-image: url('../assets/img/layered-waves-haikei.svg');
+    background-image: url('/img/layered-waves-haikei.svg');
   }
 }
 </style>

@@ -25,53 +25,28 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'NewsBlock',
-  props: {
-    isOpen: {
-      type: Boolean,
-      default: false
-    },
-    datePublished: {
-      type: String,
-      default: ''
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-    content: {
-      type: String,
-      default: ''
-    },
-    fullContent: {
-      type: Array,
-      default: () => []
-    },
-    readTime: {
-      type: String,
-      default: ''
-    },
-    readText: {
-      type: String,
-      default: 'Read More...'
-    },
-    readLinks: {
-      type: Array,
-      default: () => []
-    }
-  },
-  data () {
-    return {
-      show: false
-    }
-  },
-  created () {
-    // @ts-ignore
-    this.show = this.isOpen
-  }
-}
+<script setup lang="ts">
+const props = withDefaults(defineProps<{
+  isOpen?: boolean
+  datePublished?: string
+  title?: string
+  content?: string
+  fullContent?: string[]
+  readTime?: string
+  readText?: string
+  readLinks?: { text: string; link: string }[]
+}>(), {
+  isOpen: false,
+  datePublished: '',
+  title: '',
+  content: '',
+  fullContent: () => [],
+  readTime: '',
+  readText: 'Read More...',
+  readLinks: () => []
+})
+
+const show = ref(props.isOpen)
 </script>
 
 <style scoped lang="scss">

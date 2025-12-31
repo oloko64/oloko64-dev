@@ -4,6 +4,7 @@
       Timeline
     </h1>
     <NewsBlock
+      v-if="firstBlock"
       :is-open="true"
       :date-published="firstBlock.datePublished"
       :title="firstBlock.title"
@@ -28,26 +29,13 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'PathTimeline',
-  props: {
-    blocks: {
-      type: Array,
-      default: () => []
-    }
-  },
-  computed: {
-    // @ts-ignore
-    firstBlock () {
-      // @ts-ignore
-      return this.blocks[0]
-    },
-    // @ts-ignore
-    restBlocks () {
-      // @ts-ignore
-      return this.blocks.slice(1)
-    }
-  }
-}
+<script setup lang="ts">
+import type { TimelineData } from '~/utils/api'
+
+const props = defineProps<{
+  blocks: TimelineData[]
+}>()
+
+const firstBlock = computed(() => props.blocks[0])
+const restBlocks = computed(() => props.blocks.slice(1))
 </script>

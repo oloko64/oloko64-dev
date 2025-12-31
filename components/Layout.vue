@@ -17,14 +17,8 @@
   </div>
 </template>
 
-<script lag="ts">
-export default {
-  setup () {
-    const name = 'Reinaldo Rozato Junior'
-
-    return { name }
-  }
-}
+<script setup lang="ts">
+const name = 'Reinaldo Rozato Junior'
 </script>
 
 <style scoped lang="scss">
