@@ -6,9 +6,9 @@
     <b-alert v-if="messageWasSentError" class="mt-1" variant="danger" :model-value="true">
       Something went wrong!
     </b-alert>
-    <b-btn v-if="!isFormVisible && !messageWasSentSuccessfully" class="btn-send-message mt-1" @click="isFormVisible = !isFormVisible">
+    <b-button v-if="!isFormVisible && !messageWasSentSuccessfully" class="btn-send-message mt-1" @click="isFormVisible = !isFormVisible">
       Send me a message
-    </b-btn>
+    </b-button>
     <b-form v-if="isFormVisible" class="contact__form">
       <b-form-input
         v-model="formData.contact"
@@ -33,13 +33,13 @@
         max-rows="6"
       />
       <div class="mt-3">
-        <b-btn class="btn-send-message" :disabled="!isSendable" @click="sendEmail">
+        <b-button class="btn-send-message" :disabled="!isSendable" @click="sendEmail">
           <span v-if="!isSendLoading">Send</span>
           <b-spinner v-else small label="Spinning" />
-        </b-btn>
-        <b-btn class="btn-close-message ms-1" @click="isFormVisible = !isFormVisible">
+        </b-button>
+        <b-button class="btn-close-message ms-1" @click="isFormVisible = !isFormVisible">
           Close
-        </b-btn>
+        </b-button>
       </div>
     </b-form>
   </div>
