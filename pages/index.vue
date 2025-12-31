@@ -6,7 +6,7 @@
           <ProfileHeader />
           <ContactInformation />
           <TechStack title="Work Stack" />
-          <MyProjects :cards="myProjects" />
+          <MyProjects :cards="projects" />
           <FooterLinks :links="footerLinks" />
         </div>
       </transition>
@@ -15,44 +15,27 @@
   </div>
 </template>
 
-<script lang="ts">
-import { ProjectsData } from '../utils'
-import { getters } from '../store/data'
+<script setup lang="ts">
+const { projects, fetchProjects } = useData()
 
-export default {
-  setup () {
-    const footerLinks = [
-      {
-        name: 'Nuxt.js',
-        link: 'https://nuxtjs.org/'
-      },
-      {
-        name: 'My GitHub',
-        link: 'https://github.com/oloko64'
-      },
-      {
-        name: 'My Email',
-        link: 'mailto:reinaldorozatoj.11cg1@aleeas.com'
-      }
-    ]
-
-    return { footerLinks }
+const footerLinks = [
+  {
+    name: 'Nuxt.js',
+    link: 'https://nuxt.com/'
   },
-  computed: {
-    myProjects () {
-      // @ts-ignore
-      const myProjects: ProjectsData[] = this.$store.getters['data/getProjects'] as ReturnType<typeof getters.getProjects>
-      return myProjects
-    }
+  {
+    name: 'My GitHub',
+    link: 'https://github.com/oloko64'
   },
-  beforeMount () {
-    // @ts-ignore
-    if (!this.$store.getters['data/getProjects'].length) {
-      // @ts-ignore
-      this.$store.dispatch('data/fetchProjectsDataStore')
-    }
+  {
+    name: 'My Email',
+    link: 'mailto:reinaldorozatoj.11cg1@aleeas.com'
   }
-}
+]
+
+onMounted(() => {
+  fetchProjects()
+})
 </script>
 
 <style scoped lang="scss">
@@ -65,6 +48,6 @@ export default {
   background-position: center;
 }
 .layer {
-  background-image: url('../assets/img/layered-waves-haikei-middle.svg');
+  background-image: url('/img/layered-waves-haikei-middle.svg');
 }
 </style>

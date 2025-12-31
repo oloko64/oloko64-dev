@@ -1,28 +1,28 @@
 import axios from 'axios'
 
-interface TimelineData {
+export interface TimelineData {
   title: string;
   datePublished: string;
   content: string;
   fullContent: string[];
   readTime: string;
   readText: string;
-  readLink: string;
+  readLinks: { text: string; link: string }[];
 }
 
-interface ProjectsData {
+export interface ProjectsData {
   title: string;
   content: string;
   language: string;
   link: string;
 }
 
-interface EmailResponse {
+export interface EmailResponse {
   message: string;
   status: number;
 }
 
-async function fetchTimelineData (): Promise<TimelineData[]> {
+export async function fetchTimelineData (): Promise<TimelineData[]> {
   try {
     const { data } = await axios.get(
       'https://raw.githubusercontent.com/oloko64/oloko64-dev/main/dynamic-data/files/timeline/timeline.json'
@@ -46,7 +46,7 @@ async function fetchTimelineData (): Promise<TimelineData[]> {
   }
 }
 
-async function fetchProjectsData (): Promise<ProjectsData[]> {
+export async function fetchProjectsData (): Promise<ProjectsData[]> {
   try {
     const { data } = await axios.get(
       'https://raw.githubusercontent.com/oloko64/oloko64-dev/main/dynamic-data/files/projects/projects.json'
@@ -60,9 +60,7 @@ async function fetchProjectsData (): Promise<ProjectsData[]> {
   }
 }
 
-async function sendContactEmail (contact: string, subject :string, body: string) : Promise<EmailResponse> {
+export async function sendContactEmail (contact: string, subject :string, body: string) : Promise<EmailResponse> {
   const { data } = await axios.post('https://cmt3c5s36x3cfgmn27feawwfje0erfxd.lambda-url.us-east-1.on.aws/send-message', { contact, subject, body })
   return data
 }
-
-export { fetchTimelineData, TimelineData, ProjectsData, sendContactEmail, fetchProjectsData }

@@ -29,27 +29,23 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'MyProjects',
-  props: {
-    cards: {
-      type: Array,
-      default: () => []
-    }
-  },
-  methods: {
-    clickCard (link: string) {
-      window.open(link, '_blank')
-    },
-    cardContentMaxLength (text: string) {
-      const maxLength = 100
-      if (text.length > maxLength) {
-        return text.substring(0, maxLength) + '...'
-      } else {
-        return text
-      }
-    }
+<script setup lang="ts">
+import type { ProjectsData } from '~/utils/api'
+
+defineProps<{
+  cards: ProjectsData[]
+}>()
+
+const clickCard = (link: string) => {
+  window.open(link, '_blank')
+}
+
+const cardContentMaxLength = (text: string) => {
+  const maxLength = 100
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength) + '...'
+  } else {
+    return text
   }
 }
 </script>
