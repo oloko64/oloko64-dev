@@ -61,6 +61,6 @@ export async function fetchProjectsData (): Promise<ProjectsData[]> {
 }
 
 export async function sendContactEmail (contact: string, subject :string, body: string) : Promise<EmailResponse> {
-  const { data } = await axios.post('https://ztibn43ge3bz2jx63o6j45rtna0otrkn.lambda-url.us-east-1.on.aws/send-message', { contact, subject, body })
+  const { data } = await axios.post('https://cmt3c5s36x3cfgmn27feawwfje0erfxd.lambda-url.us-east-1.on.aws/send-message', { contact, subject, body })
   return data
 }

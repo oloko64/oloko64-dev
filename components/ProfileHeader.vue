@@ -9,23 +9,20 @@
           width="175"
         />
       </div>
-      <div>
-        <p>
-          My name is Reinaldo Rozato Junior, graduated in Computer Science at
-          UNIP.
-        </p>
-        <p>
-          With over 2 years of experience in programming, I have developed a passion for software engineering.
-          I am proficient in several programming languages including Javascript, Typescript, Rust, and Python.
-        </p>
-        <p>
-          My skills in both frontend and backend development have allowed me to work on various projects, providing me with a wide range of experience.
-        </p>
-        <p>
-          I am currently based in Araraquara, Brazil, and I am always excited to meet new people and work on challenging projects.
-          If you have any question or wish to collaborate on a project, please do not hesitate to get in touch with me.
-        </p>
-      </div>
+        <div>
+          <p>
+            My name is <strong>Reinaldo Rozato Junior</strong>, a Computer Science graduate from UNIP with over 4 years of hands-on experience in software engineering.
+          </p>
+          <p>
+            I specialize in building scalable and efficient systems, with deep expertise in <strong>Go, Rust, and TypeScript</strong>, as well as Python. My technical background allows me to bridge the gap between robust backend architecture and dynamic frontend experiences.
+          </p>
+          <p>
+            Throughout my journey, I've tackled diverse challenges that refined my ability to deliver high-quality code and solve complex architectural problems.
+          </p>
+          <p>
+            Currently based in São Paulo, Brazil, I am always open to new challenges and meaningful collaborations. If you're looking for a partner to build high-performance solutions, let's connect.
+          </p>
+        </div>
     </div>
   </div>
 </template>
