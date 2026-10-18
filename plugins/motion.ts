@@ -12,7 +12,8 @@ const getRevealObserver = () => {
   revealObserver ??= new IntersectionObserver((entries) => {
     for (const entry of entries) {
       if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible')
+        // An attribute rather than a class, so Vue's :class patching can't wipe it on re-render
+        entry.target.setAttribute('data-revealed', '')
         revealObserver?.unobserve(entry.target)
       }
     }
@@ -75,6 +76,10 @@ const tilt: Directive<HTMLElement, number | undefined> = {
     el.addEventListener('pointermove', move)
     el.addEventListener('pointerleave', leave)
     tiltHandlers.set(el, { move, leave })
+  },
+  updated (el) {
+    // Re-apply in case a :class binding on the same element replaced the class list
+    el.classList.add('tilt')
   },
   unmounted (el) {
     const handlers = tiltHandlers.get(el)

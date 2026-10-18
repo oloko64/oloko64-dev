@@ -12,10 +12,10 @@
     "lint:js": "eslint .",
     "lint": "yarn run lint:js",
     "lintfix": "yarn run lint:js --fix",
+    "typecheck": "nuxt typecheck",
     "prepare": "husky"
   },
   "dependencies": {
-    "@tresjs/cientos": "^5.9.3",
     "@tresjs/core": "^5.9.3",
     "axios": "^1.20.0",
     "nuxt": "^4.6.2",

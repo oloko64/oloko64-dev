@@ -1,7 +1,7 @@
 <template>
   <article class="timeline-item" :class="{ 'is-open': show }">
     <span class="timeline-item__node" aria-hidden="true" />
-    <div class="timeline-item__card glass gradient-border" :class="{ 'is-active': show }">
+    <div ref="card" class="timeline-item__card glass gradient-border" :class="{ 'is-active': show }">
       <div class="timeline-item__meta">
         <span class="chip">{{ datePublished }}</span>
         <span class="timeline-item__read-time">{{ readTime }}</span>
@@ -13,7 +13,7 @@
         {{ content }}
       </p>
 
-      <div :id="bodyId" class="timeline-item__collapse" :inert="!show">
+      <div :id="bodyId" ref="collapse" class="timeline-item__collapse" :inert="!show">
         <div class="timeline-item__body">
           <p v-for="paragraph in fullContent" :key="paragraph">
             {{ paragraph }}
@@ -31,7 +31,7 @@
         type="button"
         :aria-expanded="show"
         :aria-controls="bodyId"
-        @click="show = !show"
+        @click="toggle"
       >
         <span class="timeline-item__toggle-icon" aria-hidden="true">+</span>
         {{ show ? 'Hide' : readText }}
@@ -63,6 +63,41 @@ const props = withDefaults(defineProps<{
 
 const show = ref(props.isOpen)
 const bodyId = useId()
+
+const card = useTemplateRef<HTMLElement>('card')
+const collapse = useTemplateRef<HTMLElement>('collapse')
+
+// Centers the card once it has finished expanding, so the scroll targets its final height
+const centerCard = () => {
+  const el = card.value
+  if (!el) return
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches
+  const fitsViewport = el.offsetHeight < window.innerHeight - 96
+  el.scrollIntoView({
+    behavior: reducedMotion ? 'auto' : 'smooth',
+    block: fitsViewport ? 'center' : 'start'
+  })
+}
+
+const toggle = () => {
+  show.value = !show.value
+  if (!show.value || !collapse.value) return
+
+  const el = collapse.value
+  let done = false
+  const finish = () => {
+    if (done) return
+    done = true
+    el.removeEventListener('transitionend', onEnd)
+    centerCard()
+  }
+  const onEnd = (e: TransitionEvent) => {
+    if (e.target === el && e.propertyName === 'grid-template-rows') finish()
+  }
+  el.addEventListener('transitionend', onEnd)
+  // Fallback for browsers that can't transition grid rows
+  setTimeout(finish, 650)
+}
 </script>
 
 <style scoped lang="scss">
