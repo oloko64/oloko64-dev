@@ -1,65 +1,354 @@
-$body-color: rgb(200, 200, 200);
-$body-background-color: #181a1b;
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
 
-$aqua-green: rgb(0, 177, 136);
+:root {
+  --bg: #181a1b;
+  --bg-elevated: #1e2122;
+  --surface: rgba(255, 255, 255, 0.035);
+  --surface-strong: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+
+  --text: rgb(200, 200, 200);
+  --text-dim: rgb(140, 146, 150);
+  --heading: #f1f5f4;
+
+  --accent-rgb: 0, 177, 136;
+  --accent: rgb(var(--accent-rgb));
+  --accent-bright: #2ff0bf;
+  --accent-deep: rgb(0, 131, 100);
+  --accent-cyan: #22d3ee;
+  --danger: #ff5f6d;
+
+  --glow: 0 0 24px rgba(var(--accent-rgb), 0.35);
+  --glow-strong: 0 0 40px rgba(var(--accent-rgb), 0.55);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --nav-h: 68px;
+
+  --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: 'Space Grotesk', 'DM Mono', system-ui, sans-serif;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-h);
+  background-color: var(--bg);
+  color-scheme: dark;
+}
 
 body {
-  font-family: "DM Mono", Arial, sans-serif;
-  color: $body-color;
+  font-family: var(--font-mono);
+  color: var(--text);
   margin: 0;
   padding: 0;
-  line-height: 1.5;
-  background-color: $body-background-color;
+  line-height: 1.65;
+  background-color: var(--bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+// Ambient background: faint grid fading out from the top + film grain
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body::before {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 100%);
+}
+
+body::after {
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: rgba(var(--accent-rgb), 0.35);
+  color: #fff;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--heading);
+  line-height: 1.15;
+  margin: 0;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+strong {
+  color: var(--heading);
+  font-weight: 500;
 }
 
 a {
-  color: $aqua-green !important;
+  color: var(--accent);
   text-decoration: none;
   cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--accent-bright);
+  }
 }
 
-a:hover {
-  color: $aqua-green;
+img {
+  max-width: 100%;
 }
 
-hr {
-  border: 2px solid $aqua-green;
-  border-top: 1px solid $body-background-color;
-  opacity: 0.5;
+:focus-visible {
+  outline: 2px solid var(--accent-bright);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
-.indent-padding {
-  padding-left: 10px;
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-.component-spacing {
-  margin: 30px 0;
+.section {
+  position: relative;
+  padding: 96px 0;
+  scroll-margin-top: var(--nav-h);
+
+  @media (max-width: 680px) {
+    padding: 64px 0;
+  }
 }
 
-.h1-custom {
-  font-size: 2rem;
-  font-weight: bold;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.h2-custom {
-  font-size: 1.7rem;
-  font-weight: bold;
+.glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.h3-custom {
-  font-size: 1.3rem;
-  font-weight: bold;
+// Rotating conic gradient border, drawn with a mask so the fill stays transparent
+.gradient-border {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: conic-gradient(from var(--angle), transparent 0deg, var(--accent) 60deg, var(--accent-cyan) 120deg, transparent 180deg, transparent 360deg);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    opacity: 0;
+    transition: opacity 0.4s;
+    animation: spin-angle 4s linear infinite;
+    pointer-events: none;
+  }
+
+  &:hover::before,
+  &:focus-visible::before,
+  &.is-active::before {
+    opacity: 1;
+  }
 }
 
-.h4-custom {
-  font-size: 1.1rem;
-  font-weight: bold;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  padding: 0.8em 1.4em;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.25s, border-color 0.25s, box-shadow 0.25s, color 0.25s, transform 0.25s var(--ease-out);
+  translate: var(--mx, 0) var(--my, 0);
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
 }
 
-.fade-enter-active {
-  transition: opacity 1s;
+.btn--primary {
+  background: var(--accent-deep);
+  border-color: var(--accent);
+  color: #fff !important;
+  box-shadow: 0 0 0 rgba(var(--accent-rgb), 0);
+
+  &:hover:not(:disabled) {
+    background: var(--accent);
+    box-shadow: var(--glow-strong);
+  }
 }
 
-.fade-enter-from {
+.btn--ghost {
+  background: var(--surface);
+  border-color: var(--border-strong);
+  color: var(--heading) !important;
+
+  &:hover:not(:disabled) {
+    border-color: var(--accent);
+    box-shadow: var(--glow);
+  }
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.2em 0.7em;
+  font-size: 0.75rem;
+  border-radius: 999px;
+  color: var(--accent-bright);
+  background: rgba(var(--accent-rgb), 0.1);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
+}
+
+// v-tilt: rotation driven by CSS variables set from the pointer position
+.tilt {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+  transform-style: preserve-3d;
+  transition: transform 0.6s var(--ease-out);
+  will-change: transform;
+
+  // Components may define their own transitions; tracking the pointer must stay snappy
+  &.is-tilting {
+    transition: transform 0.1s linear !important;
+  }
+}
+
+.tilt-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.12), transparent 45%);
   opacity: 0;
+  transition: opacity 0.3s;
+
+  .is-tilting > & {
+    opacity: 1;
+  }
+}
+
+// v-reveal: only hidden when JS + motion are available (class set by an inline head script)
+html.motion [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(4px);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out),
+    filter 0.8s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+// Page transitions
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.35s, filter 0.35s, transform 0.35s var(--ease-out);
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(12px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.caret {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--accent-bright);
+  box-shadow: var(--glow);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes spin-angle {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
