@@ -17,13 +17,14 @@
       role="dialog"
       aria-modal="false"
       aria-label="Interactive terminal"
-      @keydown.esc="close"
+      @keydown.esc="!activeGame && close()"
     >
       <TerminalWindow title="guest@oloko64: ~" class="dev-term__window">
         <button class="dev-term__close" type="button" aria-label="Close terminal" @click="close">
           &times;
         </button>
-        <div ref="output" class="dev-term__output" @click="focusInput">
+        <TerminalGame v-if="activeGame" :key="activeGame.id" :game="activeGame" @exit="onGameExit" />
+        <div v-else ref="output" class="dev-term__output" @click="focusInput">
           <div v-for="(line, i) in lines" :key="i" class="dev-term__line" :class="`dev-term__line--${line.kind}`">
             <template v-if="line.kind === 'input'">
               <span class="dev-term__prompt">{{ promptText }}</span>{{ line.text }}
@@ -56,6 +57,8 @@
 </template>
 
 <script setup lang="ts">
+import { TERMINAL_GAMES, readHighScores, type GameDefinition } from '~/utils/terminal-games'
+
 type LineKind = 'input' | 'out' | 'accent' | 'error' | 'dim'
 
 interface Line {
@@ -88,6 +91,7 @@ const welcome: Line[] = [
   { kind: 'dim', text: 'Type "help" to list commands. Esc or "exit" to close.' }
 ]
 const lines = ref<Line[]>([...welcome])
+const activeGame = shallowRef<GameDefinition | null>(null)
 
 const print = (text: string, kind: LineKind = 'out', href?: string) => {
   lines.value.push({ kind, text, href })
@@ -162,6 +166,22 @@ const commands: Record<string, Command> = {
       print('github.com/oloko64', 'out', 'https://github.com/oloko64')
     }
   },
+  'games': {
+    description: 'list the games you can play here',
+    run: () => {
+      const scores = readHighScores()
+      for (const game of Object.values(TERMINAL_GAMES)) {
+        print(`  ${game.id.padEnd(12)}${game.controls}`)
+        print(`  ${''.padEnd(12)}best: ${scores[game.id] ?? 0}`, 'dim')
+      }
+      print('Run one by typing its name, e.g. "snake".', 'dim')
+    }
+  },
+  ...Object.fromEntries(Object.values(TERMINAL_GAMES).map(game => [game.id, {
+    description: `play ${game.title}`,
+    hidden: true,
+    run: () => { activeGame.value = game }
+  } satisfies Command])),
   'bugs': {
     description: 'bug hunter stats',
     run: () => {
@@ -276,6 +296,18 @@ const focusInput = () => {
 
 const open = async () => {
   terminalOpen.value = true
+  await nextTick()
+  input.value?.focus()
+  scrollToEnd()
+}
+
+const onGameExit = async (result: { score: number, best: number, isNew: boolean } | null) => {
+  const game = activeGame.value
+  activeGame.value = null
+  if (game && result) {
+    print(`${game.title}: exited with score ${result.score} (best: ${result.best})`, result.isNew ? 'accent' : 'out')
+    if (result.isNew) print('new high score!', 'accent')
+  }
   await nextTick()
   input.value?.focus()
   scrollToEnd()
