@@ -270,15 +270,10 @@ const detach = () => {
 
 onMounted(hydrate)
 
-// The canvas only exists while active, so (re)attach after it renders
-watch(active, async (on) => {
-  if (on) {
-    await nextTick()
-    attach()
-  } else {
-    detach()
-  }
-}, { immediate: true })
+// Start when the <canvas> actually exists and stop when it goes away (it's behind v-if="active").
+// Waiting a nextTick after `active` flips isn't enough: in production builds the client-only
+// component mounts later, the canvas was still null, and the loop ran forever with no context.
+watch(canvas, el => (el ? attach() : detach()), { flush: 'post' })
 
 onBeforeUnmount(detach)
 </script>
