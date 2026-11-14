@@ -1,0 +1,12 @@
+# Netlify builds and deploys automatically from the linked GitHub repo:
+# every push/merge to main goes to production, pull requests get deploy previews.
+
+[build]
+  command = "yarn generate"
+  publish = ".output/public"
+
+[build.environment]
+  # Node version also comes from .nvmrc; set here so it's explicit
+  NODE_VERSION = "24.22.0"
+  # Skip the husky git hooks install on the build machine
+  HUSKY = "0"
