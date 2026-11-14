@@ -7,13 +7,16 @@
         <div v-reveal class="about__portrait-wrap">
           <div v-tilt="12" class="about__portrait">
             <div class="about__ring" aria-hidden="true" />
-            <img
-              class="about__photo"
-              src="/img/profile_pic.jpg"
-              alt="Profile Image"
-              width="260"
-              height="260"
-            >
+            <div class="about__disc" aria-hidden="true" />
+            <div class="about__cutout">
+              <img
+                class="about__photo"
+                src="/img/profile.webp"
+                alt="Portrait of Reinaldo Rozato Junior"
+                width="600"
+                height="708"
+              >
+            </div>
             <span class="about__badge about__badge--1" aria-hidden="true">Go</span>
             <span class="about__badge about__badge--2" aria-hidden="true">Rust</span>
             <span class="about__badge about__badge--3" aria-hidden="true">TS</span>
@@ -27,16 +30,16 @@
           </p>
           <div class="about__bio" :class="{ 'is-shown': showBio }">
             <p>
-              My name is <strong>Reinaldo Rozato Junior</strong>, a Computer Science graduate from UNIP with over 4 years of hands-on experience in software engineering.
+              I'm <strong>Reinaldo Rozato Junior</strong>, a software engineer based in São Paulo, Brazil, with more than four years of professional experience and a degree in Computer Science from UNIP.
             </p>
             <p>
-              I specialize in building scalable and efficient systems, with deep expertise in <strong>Go, Rust, and TypeScript</strong>, as well as Python. My technical background allows me to bridge the gap between robust backend architecture and dynamic frontend experiences.
+              My core stack is <strong>Go, Rust and TypeScript</strong>, complemented by Python. I work across the stack: designing backend services built for performance and reliability, and the frontend interfaces that sit on top of them.
             </p>
             <p>
-              Throughout my journey, I've tackled diverse challenges that refined my ability to deliver high-quality code and solve complex architectural problems.
+              I value code that is easy to read, test and maintain, and I put care into architectural decisions early so systems stay fast and simple to evolve as they grow.
             </p>
             <p>
-              Currently based in São Paulo, Brazil, I am always open to new challenges and meaningful collaborations. If you're looking for a partner to build high-performance solutions, let's connect.
+              I'm open to new opportunities and collaborations. If you're building something where performance and quality matter, I'd be glad to talk.
             </p>
           </div>
         </TerminalWindow>
@@ -85,14 +88,39 @@ const showBio = ref(false)
   transform: translateZ(-20px);
 }
 
-.about__photo {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+// Backdrop circle; the transparent cutout photo sits on top of it
+.about__disc {
+  position: absolute;
+  inset: 0;
   border-radius: 50%;
   border: 3px solid var(--bg);
+  background:
+    radial-gradient(circle at 50% 35%, rgba(var(--accent-rgb), 0.35), transparent 70%),
+    linear-gradient(180deg, #1f2a27, #121615);
+  transform: translateZ(10px);
+}
+
+// Rounded at the bottom like the circle but open at the top, so the head pops out of the frame
+.about__cutout {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  height: 128%;
+  overflow: hidden;
+  border-radius: 0 0 127px 127px;
   transform: translateZ(30px);
+}
+
+.about__photo {
+  position: absolute;
+  left: 50%;
+  bottom: -8%;
+  width: 112%;
+  max-width: none;
+  height: auto;
+  translate: -50% 0;
+  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.5));
 }
 
 .about__badge {

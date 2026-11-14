@@ -6,6 +6,8 @@
       <slot />
     </main>
     <SiteFooter />
+    <BugHunter />
+    <DevTerminal />
   </div>
 </template>
 

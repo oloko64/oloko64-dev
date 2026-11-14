@@ -52,13 +52,16 @@ import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, GridHelper, t
 
 const props = defineProps<{ active: boolean }>()
 
-const camera = useTemplateRef<PerspectiveCamera>('camera')
-const core = useTemplateRef<Group>('core')
-const shell = useTemplateRef<Mesh>('shell')
-const inner = useTemplateRef<Mesh>('inner')
-const ringA = useTemplateRef<Mesh>('ringA')
-const ringB = useTemplateRef<Mesh>('ringB')
-const stars = useTemplateRef<Points>('stars')
+// Plain shallowRefs, not useTemplateRef: in dev Vue makes useTemplateRef values deeply
+// readonly, which silently blocks every rotation/position write in the render loop
+
+const camera = shallowRef<PerspectiveCamera | null>(null)
+const core = shallowRef<Group | null>(null)
+const shell = shallowRef<Mesh | null>(null)
+const inner = shallowRef<Mesh | null>(null)
+const ringA = shallowRef<Mesh | null>(null)
+const ringB = shallowRef<Mesh | null>(null)
+const stars = shallowRef<Points | null>(null)
 
 // Particle field distributed in a hollow sphere around the scene
 const STAR_COUNT = 1600

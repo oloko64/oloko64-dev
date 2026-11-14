@@ -28,7 +28,7 @@
           :to="link.to"
           @click="menuOpen = false"
         >
-          <span class="nav__index">0{{ i }}.</span>{{ link.name }}
+          <span class="nav__index">{{ String(i).padStart(2, '0') }}.</span>{{ link.name }}
         </NuxtLink>
       </nav>
     </div>
@@ -41,6 +41,7 @@ const name = 'Reinaldo Rozato Junior'
 const links = [
   { name: 'Home', to: '/' },
   { name: 'About', to: '/#about' },
+  { name: 'Stack', to: '/#stack' },
   { name: 'Projects', to: '/#projects' },
   { name: 'Contact', to: '/#contact' },
   { name: 'Timeline', to: '/timeline/' }
