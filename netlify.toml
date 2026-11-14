@@ -3,7 +3,9 @@
 
 [build]
   command = "yarn generate"
-  publish = ".output/public"
+  # On Netlify (NETLIFY=true) Nuxt uses the netlify-static preset, which outputs to dist/
+  # rather than .output/public/ like a local `yarn generate` does
+  publish = "dist"
 
 [build.environment]
   # Node version also comes from .nvmrc; set here so it's explicit

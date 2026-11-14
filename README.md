@@ -42,7 +42,7 @@ Commit messages are validated by commitlint in the `commit-msg` hook, so use the
 
 ## Deployment
 
-The site is hosted on Netlify, which is linked to this repository. Every merge (push) to `main` triggers a production deploy, and pull requests get deploy previews. The build settings live in [`netlify.toml`](netlify.toml): Netlify runs `yarn generate` and publishes `.output/public`.
+The site is hosted on Netlify, which is linked to this repository. Every merge (push) to `main` triggers a production deploy, and pull requests get deploy previews. The build settings live in [`netlify.toml`](netlify.toml): Netlify runs `yarn generate` and publishes `dist` (on Netlify, Nuxt's static preset writes there instead of `.output/public`).
 
 ## Project structure
 
